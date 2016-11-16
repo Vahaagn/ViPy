@@ -14,3 +14,16 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    author = models.ForeignKey('auth.User')
+    text = models.TextField()
+    created_date = models.DateTimeField(default=timezone.now)
+    modified_date = models.DateTimeField(blank=True, null=True)
+
+    def publish(self):
+        self.save()
+
+    def __str__(self):
+        return "%s: %s" % (self.author, self.text)
